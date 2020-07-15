@@ -2,18 +2,23 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import CardContainer from '../components/CardContainer';
 import SearchBar from '../components/SearchBar';
+import PageChangeNavbar from '../components/PageChangeNavbar';
 import Container from 'react-bootstrap/Container';
 
 export default class SearchPage extends Component {
 
     state = {
             results: [],
-            searchTerm: '',
+            searchTerm: 'BD',
             searchCondition: 'applicant',
             pageNumber: 0,
             resultCount: 0,
             limit:10
         };
+
+    componentDidMount() {
+        this.search(0)
+    }
 
     searchFromSearchBar = () => {
         this.setState({pageNumber: 0});
@@ -37,18 +42,11 @@ export default class SearchPage extends Component {
         return total - this.state.limit + " - " + (this.state.resultCount > total ? + total : this.state.resultCount);
     }
 
-    next = () => {
-        this.setState({pageNumber: this.state.pageNumber+1});
-        this.search(this.state.searchTerm, this.state.searchCondition, this.state.pageNumber+1);
-        window.scrollTo(0,0);
+    changePage = (pageChange) => {
+        const newPageNumber = this.state.pageNumber + parseInt(pageChange)
+        this.setState({pageNumber: newPageNumber});
+        this.search(newPageNumber);
     }
-
-    prev = () => {
-        this.setState({pageNumber: this.state.pageNumber-1})
-        this.search(this.state.searchTerm, this.state.searchCondition, this.state.pageNumber-1);
-        window.scrollTo(0,0);
-    }
-
 
     render() {
         return (
@@ -61,6 +59,12 @@ export default class SearchPage extends Component {
                 />
                 {(this.state.resultCount === 0) ? <></> :<h4>Results: {this.resultsShown()} out of {this.state.resultCount}</h4>}
                 <CardContainer results={this.state.results}/>
+                {(this.state.resultCount === 0) ? <></> :
+                    <PageChangeNavbar 
+                        changePage = {this.changePage} 
+                        pageNumber = {this.state.pageNumber}
+                        resultCount = {this.state.resultCount}
+                    />}
             </Container>
         )
     }
