@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import CardContainer from '../components/CardContainer';
-import SearchBar from '../components/SearchBar';
-import PageChangeNavbar from '../components/PageChangeNavbar';
+import CardContainer from '../components/searchComponents/CardContainer';
+import SearchBar from '../components/searchComponents/SearchBar';
+import PageChangeNavbar from '../components/searchComponents/PageChangeNavbar';
+import ErrorResponse from '../components/searchComponents/ErrorResponse';
 import Container from 'react-bootstrap/Container';
 
 export default class SearchPage extends Component {
@@ -13,7 +14,8 @@ export default class SearchPage extends Component {
             searchCondition: 'applicant',
             pageNumber: 0,
             resultCount: 0,
-            limit:10
+            limit:10,
+            error: null
         };
 
     componentDidMount() {
@@ -33,7 +35,9 @@ export default class SearchPage extends Component {
                 skip: pageNumber*this.state.limit
             }
         }).then(res => {
-            this.setState({resultCount : res.data.meta.results.total, results : res.data.results});
+            this.setState({resultCount : res.data.meta.results.total, results : res.data.results, error: null});
+        }).catch(err => {
+            this.setState({resultCount: 0, error: err})
         })
     }
 
@@ -50,22 +54,32 @@ export default class SearchPage extends Component {
 
     render() {
         return (
-            <Container>
-                <SearchBar 
-                    search={this.searchFromSearchBar}
-                    setCondition={(searchCondition) => {this.setState({searchCondition})}}
-                    setTerm={(searchTerm) => {this.setState({searchTerm})}}
-                    searchCondition = {this.state.searchCondition}
-                />
-                {(this.state.resultCount === 0) ? <></> :<h4>Results: {this.resultsShown()} out of {this.state.resultCount}</h4>}
+        <Container>
+            <SearchBar 
+                search={this.searchFromSearchBar}
+                setCondition={(searchCondition) => {this.setState({searchCondition})}}
+                setTerm={(searchTerm) => {this.setState({searchTerm})}}
+                searchCondition = {this.state.searchCondition}
+            />
+
+            {(this.state.error) ? 
+                <ErrorResponse
+                    error={this.state.error} 
+                    searchCondition={this.state.searchCondition}
+                    searchTerm={this.state.searchTerm}        
+                /> : null }
+
+            {(this.state.resultCount === 0) ?  null : 
+            <React.Fragment>
+                <h4>Results: {this.resultsShown()} out of {this.state.resultCount}</h4>
                 <CardContainer results={this.state.results}/>
-                {(this.state.resultCount === 0) ? <></> :
-                    <PageChangeNavbar 
-                        changePage = {this.changePage} 
-                        pageNumber = {this.state.pageNumber}
-                        resultCount = {this.state.resultCount}
-                    />}
-            </Container>
+                <PageChangeNavbar 
+                    changePage = {this.changePage} 
+                    pageNumber = {this.state.pageNumber}
+                    resultCount = {this.state.resultCount}
+                />
+            </React.Fragment>}
+        </Container>
         )
     }
 }

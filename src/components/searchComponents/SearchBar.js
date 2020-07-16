@@ -4,7 +4,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import styled from 'styled-components'
-import px2vw from "../utils/px2vw"
+import px2vw from "../../utils/px2vw"
 
 const Styles = styled.div`
     .InputGroup{

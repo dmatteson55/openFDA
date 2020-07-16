@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components'
-import px2vw from "../utils/px2vw"
+import px2vw from "../../utils/px2vw"
 
 const Styles = styled.div`
 .card{
@@ -43,7 +43,6 @@ export default class ResultCard extends Component {
                             </Row>
                             <Row> 
                                 <Col>Medical Speciality: {this.props.result.openfda.medical_specialty_description}</Col>
-                                
                                 <Col>Product Code: {this.props.result.product_code}</Col>
                             </Row>
                             <Row>
