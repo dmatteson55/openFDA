@@ -60,6 +60,7 @@ export default class SearchPage extends Component {
                 setCondition={(searchCondition) => {this.setState({searchCondition})}}
                 setTerm={(searchTerm) => {this.setState({searchTerm})}}
                 searchCondition = {this.state.searchCondition}
+                searchTerm={this.state.searchTerm}
             />
 
             {(this.state.error) ? 

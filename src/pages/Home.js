@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios'
+import Container from 'react-bootstrap/esm/Container';
+import SearchBar from '../components/searchComponents/SearchBar';
 
-export default class Information extends Component{
+export default class HomePage extends Component{
     state = {
         disclaimer: "",
         terms: "",
@@ -19,13 +21,14 @@ export default class Information extends Component{
 
     render(){
         return (
-            <div>
+            <Container>
                 <p>{this.state.disclaimer}</p>
-                <p>Terms: <a href={this.state.terms} target="_blank">{this.state.terms}</a> 
-                || License: <a href={this.state.license} target="_blank">{this.state.license}</a></p>
+                <p>Terms: <a href={this.state.terms} target="_blank" rel="noopener noreferrer">{this.state.terms}</a> 
+                || License: <a href={this.state.license} target="_blank" rel="noopener noreferrer">{this.state.license}</a></p>
 
                 <p>openFDA Endpoint Last Updated: {this.state.last_updated}</p>
-            </div>
+                    <SearchBar      />
+            </Container>
         )
     }
 }

@@ -1,11 +1,16 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import SearchPage from './pages/Search'
+import HomePage from './pages/Home'
 
 const App = () => {
   return (
-    <React.Fragment>
-      <SearchPage />
-    </React.Fragment>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/search" component={SearchPage} />
+      </Switch>
+    </Router>
   );
 }
 

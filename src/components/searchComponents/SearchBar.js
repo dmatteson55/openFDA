@@ -18,11 +18,6 @@ const Styles = styled.div`
 }
 `
 export default class SearchBar extends Component {
-    state =  {
-        searchCondition: "applicant",
-        searchTerm: ""
-    };
-
     setSearch = (event) => {
         this.props.search();
         event.preventDefault();
@@ -51,7 +46,7 @@ export default class SearchBar extends Component {
                         </DropdownButton>
                         <FormControl 
                             aria-describedby="basic-addon1" 
-                            defaultValue={this.state.searchTerm}
+                            defaultValue={this.props.searchTerm}
                             onChange={(e) => {this.props.setTerm(e.target.value)}}
                         />
                     </InputGroup>
