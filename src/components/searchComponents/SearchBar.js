@@ -3,8 +3,12 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
+
 import styled from 'styled-components'
 import px2vw from "../../utils/px2vw"
+
+import { connect } from 'react-redux'
+import { changeTerm, changeCondition } from '../../utils/actions/searchActions'
 
 const Styles = styled.div`
     .InputGroup{
@@ -17,11 +21,12 @@ const Styles = styled.div`
         }
 }
 `
-export default class SearchBar extends Component {
+class SearchBar extends Component {
+    
     setSearch = (event) => {
         this.props.search();
         event.preventDefault();
-      }    
+    }    
 
     render() {
         return (
@@ -35,7 +40,7 @@ export default class SearchBar extends Component {
                             as={InputGroup.Prepend}
                             variant="outline-secondary"
                             title={this.props.searchCondition}
-                            onSelect={(e) => {this.props.setCondition(e)}}
+                            onSelect={(e) => {this.props.changeCondition(e)}}
                         >
                             <Dropdown.Item eventKey="applicant">Applicant</Dropdown.Item>
                             <Dropdown.Item eventKey='device_name'>Device Name</Dropdown.Item>
@@ -47,7 +52,7 @@ export default class SearchBar extends Component {
                         <FormControl 
                             aria-describedby="basic-addon1" 
                             defaultValue={this.props.searchTerm}
-                            onChange={(e) => {this.props.setTerm(e.target.value)}}
+                            onChange={(e) => {this.props.changeTerm(e.target.value)}}
                         />
                     </InputGroup>
                 </form>
@@ -57,3 +62,10 @@ export default class SearchBar extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    searchTerm: state.search.searchTerm,
+    searchCondition: state.search.searchCondition
+})
+
+export default connect(mapStateToProps, { changeTerm, changeCondition })(SearchBar)

@@ -1,0 +1,4 @@
+export const SEARCH_RESULTS = 'SEARCH_RESULTS';
+export const CHANGE_TERM = 'CHANGE_TERM';
+export const CHANGE_CONDITION = 'CHANGE_CONDITION';
+export const CHANGE_PAGE = 'CHANGE_PAGE'

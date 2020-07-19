@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-export default class ErrorResponse extends Component {
+class ErrorResponse extends Component {
     reportError = (errorStatus) => {
         if (errorStatus === 400 || errorStatus === 404){
             return <React.Fragment>
@@ -58,3 +59,9 @@ export default class ErrorResponse extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    searchTerm: state.search.searchTerm,
+    searchCondition: state.search.searchCondition
+})
+
+export default connect(mapStateToProps, null)(ErrorResponse)

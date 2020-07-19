@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios'
 import Container from 'react-bootstrap/esm/Container';
 import SearchBar from '../components/searchComponents/SearchBar';
 
-export default class HomePage extends Component{
+import { connect } from 'react-redux'
+import { searchResults, changePage} from '../utils/actions/searchActions'
+
+class HomePage extends Component{
     state = {
         disclaimer: "",
         terms: "",
@@ -12,6 +16,7 @@ export default class HomePage extends Component{
     }
 
     componentDidMount(){
+        this.props.changePage(-this.props.pageNumber);
         axios.get("https://api.fda.gov/device/event.json")
             .then(res => {
                 const {disclaimer, terms, license, last_updated} = res.data.meta;
@@ -19,16 +24,28 @@ export default class HomePage extends Component{
             })
     }
 
+    searchFromSearchBar = () => {
+        this.props.searchResults();
+        this.props.history.push('/search')
+    }
+
     render(){
         return (
             <Container>
                 <p>{this.state.disclaimer}</p>
-                <p>Terms: <a href={this.state.terms} target="_blank" rel="noopener noreferrer">{this.state.terms}</a> 
-                || License: <a href={this.state.license} target="_blank" rel="noopener noreferrer">{this.state.license}</a></p>
+                <p>Terms: 
+                    <a href={this.state.terms} target="_blank" rel="noopener noreferrer">{this.state.terms}</a> || License: 
+                    <a href={this.state.license} target="_blank" rel="noopener noreferrer">{this.state.license}</a></p>
 
                 <p>openFDA Endpoint Last Updated: {this.state.last_updated}</p>
-                    <SearchBar      />
+                <SearchBar search={this.searchFromSearchBar}/>
             </Container>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    pageNumber: state.search.pageNumber
+})
+
+export default connect(mapStateToProps, {searchResults, changePage})(withRouter(HomePage))

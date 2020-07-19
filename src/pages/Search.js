@@ -1,86 +1,64 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import CardContainer from '../components/searchComponents/CardContainer';
 import SearchBar from '../components/searchComponents/SearchBar';
 import PageChangeNavbar from '../components/searchComponents/PageChangeNavbar';
 import ErrorResponse from '../components/searchComponents/ErrorResponse';
 import Container from 'react-bootstrap/Container';
 
-export default class SearchPage extends Component {
+import { connect } from 'react-redux'
+import { searchResults, changePage } from '../utils/actions/searchActions'
 
-    state = {
-            results: [],
-            searchTerm: 'BD',
-            searchCondition: 'applicant',
-            pageNumber: 0,
-            resultCount: 0,
-            limit:10,
-            error: null
-        };
+class SearchPage extends Component {
+    limit = 10;
 
     componentDidMount() {
-        this.search(0)
+        this.props.searchResults();
     }
 
     searchFromSearchBar = () => {
-        this.setState({pageNumber: 0});
-        this.search(0);
-    }
-
-    search = (pageNumber) => {
-        axios.get("https://api.fda.gov/device/510k.json", {
-            params: {
-                search : this.state.searchCondition+':'+this.state.searchTerm,
-                limit : this.state.limit,
-                skip: pageNumber*this.state.limit
-            }
-        }).then(res => {
-            this.setState({resultCount : res.data.meta.results.total, results : res.data.results, error: null});
-        }).catch(err => {
-            this.setState({resultCount: 0, error: err})
-        })
+        this.props.changePage(-this.props.pageNumber);
+        this.props.searchResults();
+        window.scrollTo(0,0);
     }
 
     resultsShown = () => {
-        const total = this.state.limit*(this.state.pageNumber+1);
-        return total - this.state.limit + " - " + (this.state.resultCount > total ? + total : this.state.resultCount);
-    }
-
-    changePage = (pageChange) => {
-        const newPageNumber = this.state.pageNumber + parseInt(pageChange)
-        this.setState({pageNumber: newPageNumber});
-        this.search(newPageNumber);
+        const total = this.limit*(this.props.pageNumber+1);
+        return total - this.limit + " - " + (this.props.resultCount > total ? + total : this.props.resultCount);
     }
 
     render() {
         return (
         <Container>
-            <SearchBar 
-                search={this.searchFromSearchBar}
-                setCondition={(searchCondition) => {this.setState({searchCondition})}}
-                setTerm={(searchTerm) => {this.setState({searchTerm})}}
-                searchCondition = {this.state.searchCondition}
-                searchTerm={this.state.searchTerm}
-            />
+            <SearchBar search={this.searchFromSearchBar}/>
 
-            {(this.state.error) ? 
+            {(this.props.error) ?
                 <ErrorResponse
-                    error={this.state.error} 
-                    searchCondition={this.state.searchCondition}
-                    searchTerm={this.state.searchTerm}        
+                    error={this.props.error}
                 /> : null }
 
-            {(this.state.resultCount === 0) ?  null : 
+            {(this.props.resultCount === 0) ?  null :
             <React.Fragment>
-                <h4>Results: {this.resultsShown()} out of {this.state.resultCount}</h4>
-                <CardContainer results={this.state.results}/>
-                <PageChangeNavbar 
-                    changePage = {this.changePage} 
-                    pageNumber = {this.state.pageNumber}
-                    resultCount = {this.state.resultCount}
+                <h4>Results: {this.resultsShown()} out of {this.props.resultCount}</h4>
+                <CardContainer results={this.props.results}/>
+                <PageChangeNavbar
+                    resultCount = {this.props.resultCount}
+                    search = {this.props.searchResults}
                 />
             </React.Fragment>}
         </Container>
         )
     }
 }
+
+
+const mapStateToProps = state => ({
+    results: state.search.results,
+    resultCount: state.search.resultCount,
+    error: state.search.error,
+    searchTerm: state.search.searchTerm,
+    searchCondition: state.search.searchCondition,
+    pageNumber: state.search.pageNumber
+})
+
+
+export default connect(mapStateToProps, { searchResults, changePage})(SearchPage)

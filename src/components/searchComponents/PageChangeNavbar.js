@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import styled from 'styled-components'
 
+import { connect } from 'react-redux'
+import { changePage } from '../../utils/actions/searchActions'
+
 
 const StyledButton = styled(Button)`
     font-size: 1em;
@@ -24,10 +27,11 @@ const PageNumber = styled.p`
 }
 `
 
-export default class PageChangeNavbar extends Component {
+class PageChangeNavbar extends Component {
 
     changePage = (e) => {
         this.props.changePage(e.target.value);
+        this.props.search();
         window.scrollTo(0,0);
     }
     
@@ -40,13 +44,13 @@ export default class PageChangeNavbar extends Component {
                         disabled={this.props.pageNumber === 0}
                         >First</StyledButton>
                     <StyledButton 
-                        value="-1" 
+                        value="-1"
                         onClick={this.changePage} 
                         disabled={this.props.pageNumber === 0}
                         >Perv</StyledButton>
                     <PageNumber>Page: {this.props.pageNumber+1}</PageNumber>
                     <StyledButton 
-                        value="1" 
+                        value="1"
                         onClick={this.changePage} 
                         disabled={(this.props.pageNumber+1)*10 > this.props.resultCount}
                         >Next</StyledButton>
@@ -60,3 +64,9 @@ export default class PageChangeNavbar extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    pageNumber: state.search.pageNumber
+})
+
+export default connect(mapStateToProps, {changePage})(PageChangeNavbar)
