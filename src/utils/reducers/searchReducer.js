@@ -4,11 +4,12 @@ const initialState = {
     results: [{}],
     resultCount: 0,
     searchCondition: "applicant",
-    searchTerm: "",
+    searchTerm: "BD",
     pageNumber: 0,
     error: null
 }
 
+//searchReducer: changes search variables and results
 const searchReducer =  (state = initialState, action) =>{
     switch(action.type){
         case CHANGE_TERM:

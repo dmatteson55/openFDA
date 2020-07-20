@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+//ErrorResponse Componenet, displays error if openFDA responds with error.
 class ErrorResponse extends Component {
     reportError = (errorStatus) => {
         if (errorStatus === 400 || errorStatus === 404){
@@ -20,10 +21,10 @@ class ErrorResponse extends Component {
                             </li>
                             <li>Check openFDA documenation on your search field, "{this.props.searchCondition}": 
                                 <a 
-                                    href="https://open.fda.gov/apis/drug/event/searchable-fields" 
+                                    href="https://open.fda.gov/apis/device/510k/searchable-fields/" 
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                > https://open.fda.gov/apis/drug/event/searchable-fields</a>
+                                > https://open.fda.gov/apis/device/510k/searchable-fields</a>
                             </li>
                         </ul>
                     </React.Fragment>

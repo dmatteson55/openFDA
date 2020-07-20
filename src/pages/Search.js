@@ -8,6 +8,8 @@ import Container from 'react-bootstrap/Container';
 import { connect } from 'react-redux'
 import { searchResults, changePage } from '../utils/actions/searchActions'
 
+
+//SearchPage Componenet, 
 class SearchPage extends Component {
     limit = 10;
 
@@ -15,6 +17,7 @@ class SearchPage extends Component {
         this.props.searchResults();
     }
 
+    ////prop for searchbar componenet (resets pageNumber to 0, scrolls to top of page)
     searchFromSearchBar = () => {
         this.props.changePage(-this.props.pageNumber);
         this.props.searchResults();

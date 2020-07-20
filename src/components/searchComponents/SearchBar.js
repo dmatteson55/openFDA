@@ -21,6 +21,8 @@ const Styles = styled.div`
         }
 }
 `
+
+//SearchBar Componenet, responsible for setting searchTerm and searchCondition
 class SearchBar extends Component {
     
     setSearch = (event) => {
@@ -38,7 +40,7 @@ class SearchBar extends Component {
                         </InputGroup.Prepend>
                         <DropdownButton
                             as={InputGroup.Prepend}
-                            variant="outline-secondary"
+                            variant="secondary"
                             title={this.props.searchCondition}
                             onSelect={(e) => {this.props.changeCondition(e)}}
                         >

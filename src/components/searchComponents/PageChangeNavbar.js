@@ -12,6 +12,19 @@ const StyledButton = styled(Button)`
     margin: 1em;
     padding: 0.25em 1em;
     border-radius: 3px;
+    border-color: #8d8741;
+    background-color:  #8d8741;
+
+    :disabled, :hover, :focus{
+        border-color: #8d8741;
+        background-color:  #8d8741;
+    }
+
+    :active {
+        border-color: #8d8741;
+        background-color:  #8d8741;
+    }
+    
 `
 
 const StyledContainer= styled(Container)`{
@@ -23,10 +36,10 @@ const StyledContainer= styled(Container)`{
 const PageNumber = styled.p`
     font-size: 1em;
     margin: 1em;
-    background-color:
 }
 `
 
+//PageChangeNavbar Componenet, change page number (increment/decrment/first/last)
 class PageChangeNavbar extends Component {
 
     changePage = (e) => {
@@ -38,23 +51,23 @@ class PageChangeNavbar extends Component {
     render() {
         return (
             <StyledContainer>
-                    <StyledButton 
+                    <StyledButton variant="secondary"
                         value={-this.props.pageNumber} 
                         onClick={this.changePage} 
                         disabled={this.props.pageNumber === 0}
                         >First</StyledButton>
-                    <StyledButton 
+                    <StyledButton variant="secondary"
                         value="-1"
                         onClick={this.changePage} 
                         disabled={this.props.pageNumber === 0}
                         >Perv</StyledButton>
                     <PageNumber>Page: {this.props.pageNumber+1}</PageNumber>
-                    <StyledButton 
+                    <StyledButton variant="secondary"
                         value="1"
                         onClick={this.changePage} 
                         disabled={(this.props.pageNumber+1)*10 > this.props.resultCount}
                         >Next</StyledButton>
-                    <StyledButton 
+                    <StyledButton variant="secondary"
                         value={this.props.resultCount/10 - this.props.pageNumber}
                         onClick={this.changePage} 
                         disabled={(this.props.pageNumber+1)*10 > this.props.resultCount}

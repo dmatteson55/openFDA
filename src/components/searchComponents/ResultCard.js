@@ -28,6 +28,7 @@ const Styles = styled.div`
 }
 `;
 
+//ResultCard component displays singular result passed as prop
 export default class ResultCard extends Component {
     render() {
         return (

@@ -1,6 +1,7 @@
 import { SEARCH_RESULTS, CHANGE_TERM, CHANGE_CONDITION, CHANGE_PAGE } from './types'
 import axios from 'axios'
 
+//Fetch results from openFDA
 export const searchResults = () => (dispatch, getState) => {
     const {searchTerm, searchCondition, pageNumber } = getState().search
     axios.get("https://api.fda.gov/device/510k.json", {
@@ -22,6 +23,7 @@ export const searchResults = () => (dispatch, getState) => {
     })
 }
 
+//Set searchTerm
 export const changeTerm = (searchTerm) => (dispatch) => {
     dispatch({
         type: CHANGE_TERM,
@@ -30,6 +32,7 @@ export const changeTerm = (searchTerm) => (dispatch) => {
     );
 }
 
+//Set searchCondition
 export const changeCondition = (searchCondition) => (dispatch) => {
     dispatch({
         type: CHANGE_CONDITION,
@@ -37,6 +40,7 @@ export const changeCondition = (searchCondition) => (dispatch) => {
     })
 }
 
+//Set pageNumber
 export const changePage = (pageChange) => (dispatch) => {
     dispatch({
         type: CHANGE_PAGE,
